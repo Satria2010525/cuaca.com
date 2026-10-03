@@ -1,0 +1,98 @@
+:root {
+  --ink: #12202f;
+  --paper: #f6fbff;
+  --accent: #ffd166;
+  --bg1: #7ec4ee;
+  --bg2: #dff1fb;
+  --fg: var(--ink);
+  --line: color-mix(in srgb, var(--fg) 18%, transparent);
+  --soft: color-mix(in srgb, var(--fg) 8%, transparent);
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+/* Warna langit berubah sesuai kondisi cuaca */
+body[data-sky="clear-day"]  { --bg1:#6fbdf0; --bg2:#e6f5ff; --fg:#10253a; }
+body[data-sky="clear-night"]{ --bg1:#0e1830; --bg2:#26385e; --fg:#eef3ff; }
+body[data-sky="cloud-day"]  { --bg1:#97aebf; --bg2:#e3eaf0; --fg:#18252f; }
+body[data-sky="cloud-night"]{ --bg1:#1d2631; --bg2:#3c4958; --fg:#eaf0f6; }
+body[data-sky="rain"]       { --bg1:#41586b; --bg2:#8aa1b3; --fg:#f4f8fb; }
+body[data-sky="storm"]      { --bg1:#231f35; --bg2:#4d4668; --fg:#f6f3ff; }
+body[data-sky="snow"]       { --bg1:#aebfd0; --bg2:#f2f7fb; --fg:#1b2a38; }
+body[data-sky="fog"]        { --bg1:#a9b0b3; --bg2:#e7e9e8; --fg:#232a2d; }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh;
+  font: 400 1rem/1.5 var(--body);
+  color: var(--fg);
+  background: linear-gradient(180deg, var(--bg1), var(--bg2)) fixed;
+  transition: background .8s, color .8s;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 20px 20px 40px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Bilah atas */
+.top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.search { display: flex; flex: 1 1 280px; border: 1.5px solid var(--fg); border-radius: 999px; overflow: hidden; background: var(--soft); }
+.search input { flex: 1; min-width: 0; padding: 10px 18px; border: 0; background: transparent; color: inherit; font: inherit; }
+.search input::placeholder { color: inherit; opacity: .6; }
+.search input:focus-visible { outline-offset: -3px; }
+button { font: 600 .95rem var(--body); cursor: pointer; color: inherit; }
+.search button { border: 0; padding: 0 20px; background: var(--fg); color: var(--bg2); }
+.tools { display: flex; gap: 8px; }
+.ghost { padding: 9px 16px; border: 1.5px solid var(--line); border-radius: 999px; background: transparent; }
+.ghost:hover { border-color: var(--fg); }
+
+.status { margin: 28px 0; }
+.status.error { padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--soft); }
+
+/* Hero */
+.hero { padding: 36px 0 28px; border-bottom: 1px solid var(--line); }
+h1 { margin: 0; font: 700 clamp(1.6rem, 5vw, 2.2rem)/1.1 var(--display); letter-spacing: -.01em; }
+.muted { margin: 4px 0 0; opacity: .7; }
+.temp-row { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+.icon { font-size: clamp(3.5rem, 14vw, 5.5rem); line-height: 1; }
+.temp { font: 700 clamp(5rem, 24vw, 9rem)/.95 var(--display); letter-spacing: -.04em; }
+.desc { margin: 4px 0 24px; font: 500 1.35rem var(--display); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 20px; margin: 0; }
+.facts dt { font-size: .85rem; opacity: .7; }
+.facts dd { margin: 0; font-weight: 600; font-size: 1.1rem; }
+
+h2 { margin: 32px 0 12px; font: 700 1.2rem var(--display); }
+
+/* Per jam */
+.hourly { display: flex; gap: 8px; margin: 0; padding: 0 0 10px; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; }
+.hourly li { flex: 0 0 74px; padding: 12px 6px; text-align: center; border: 1px solid var(--line); border-radius: 14px; scroll-snap-align: start; }
+.hourly li:first-child { background: var(--soft); border-color: var(--fg); }
+.hourly .h-time { font-size: .85rem; opacity: .75; }
+.hourly .h-icon { display: block; margin: 4px 0; font-size: 1.6rem; }
+.hourly .h-temp { font-weight: 600; }
+.hourly .h-rain { font-size: .78rem; opacity: .75; min-height: 1.2em; }
+
+/* Harian */
+.daily { margin: 0; padding: 0; list-style: none; }
+.daily li { display: grid; grid-template-columns: 5.5rem 2rem 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.d-name { font-weight: 600; }
+.d-icon { font-size: 1.5rem; text-align: center; }
+.d-bar { position: relative; height: 6px; border-radius: 3px; background: var(--soft); }
+.d-bar span { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--fg); }
+.d-range { display: flex; gap: 10px; min-width: 7.5rem; justify-content: flex-end; font-variant-numeric: tabular-nums; }
+.d-range .lo { opacity: .65; }
+.d-rain { font-size: .8rem; opacity: .75; grid-column: 3 / 5; margin-top: -8px; }
+
+.foot { margin-top: 40px; font-size: .85rem; opacity: .75; }
+.foot a { color: inherit; }
+
+/* Animasi muncul satu kali saat data tiba */
+#app:not([hidden]) .hero { animation: rise .6s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 480px) {
+  .daily li { grid-template-columns: 4.5rem 1.8rem 1fr auto; gap: 8px; }
+  .d-range { min-width: 6rem; }
+}
